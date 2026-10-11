@@ -420,8 +420,16 @@ def _save_user():
     height_cm = request.args.get("height_cm")
     goal = request.args.get("goal")
 
-    if age is None or gender is None or weight_kg is None or height_cm is None or goal is None:
-        return jsonify({"error": "age, gender, weight_kg, height_cm and goal are required"}), 400
+    if (
+        age is None
+        or gender is None
+        or weight_kg is None
+        or height_cm is None
+        or goal is None
+    ):
+        return jsonify(
+            {"error": "age, gender, weight_kg, height_cm and goal are required"}
+        ), 400
 
     try:
         age = float(age)
@@ -431,7 +439,9 @@ def _save_user():
         return jsonify({"error": "age, weight_kg and height_cm must be numbers"}), 400
 
     if age <= 0 or weight_kg <= 0 or height_cm <= 0:
-        return jsonify({"error": "age, weight_kg and height_cm must be greater than 0"}), 400
+        return jsonify(
+            {"error": "age, weight_kg and height_cm must be greater than 0"}
+        ), 400
 
     if age == int(age):
         age = int(age)
@@ -570,7 +580,9 @@ def _daily_targets():
     print("calling", url)
 
     try:
-        outgoing = urllib.request.Request(url, headers={"User-Agent": "calorie-lab/1.0"})
+        outgoing = urllib.request.Request(
+            url, headers={"User-Agent": "calorie-lab/1.0"}
+        )
         remote = urllib.request.urlopen(outgoing, timeout=10)
         payload = json.loads(remote.read().decode())
         remote.close()

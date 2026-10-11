@@ -42,7 +42,9 @@ class DietFlowTest(unittest.TestCase):
         cls.original_notices = (
             cls.notices_path.read_text() if cls.notices_path.exists() else None
         )
-        cls.original_user = cls.user_path.read_text() if cls.user_path.exists() else None
+        cls.original_user = (
+            cls.user_path.read_text() if cls.user_path.exists() else None
+        )
         cls.catalog = json.loads(cls.original_activities)
 
     def setUp(self):
@@ -84,10 +86,14 @@ class DietFlowTest(unittest.TestCase):
         )
 
         self.assertEqual(
-            self.client.post("/activities", data="nope", content_type="text/plain").status_code,
+            self.client.post(
+                "/activities", data="nope", content_type="text/plain"
+            ).status_code,
             400,
         )
-        self.assertEqual(self.client.post("/activities", json={"name": "boxing"}).status_code, 400)
+        self.assertEqual(
+            self.client.post("/activities", json={"name": "boxing"}).status_code, 400
+        )
         self.assertEqual(
             self.client.post(
                 "/activities", json={"name": "  ", "calories_per_60_min": 100}
@@ -106,7 +112,9 @@ class DietFlowTest(unittest.TestCase):
             ).status_code,
             400,
         )
-        self.assertEqual(len(self.client.get("/activities").get_json()), len(self.catalog))
+        self.assertEqual(
+            len(self.client.get("/activities").get_json()), len(self.catalog)
+        )
 
         created = self.client.post(
             "/activities", json={"name": " boxing ", "calories_per_60_min": "540"}
@@ -125,7 +133,9 @@ class DietFlowTest(unittest.TestCase):
         )
         self.assertEqual(duplicate.status_code, 400)
         boxing = next(
-            row for row in self.client.get("/activities").get_json() if row["name"] == "boxing"
+            row
+            for row in self.client.get("/activities").get_json()
+            if row["name"] == "boxing"
         )
         self.assertEqual(boxing["calories_per_60_min"], 540)
 
@@ -138,24 +148,40 @@ class DietFlowTest(unittest.TestCase):
         self.assertEqual(self.client.get("/notices").get_json(), [])
 
         self.assertEqual(
-            self.client.post("/log", data="x", content_type="text/plain").status_code, 400
-        )
-        self.assertEqual(self.client.post("/log", json={"minutes": 10}).status_code, 400)
-        self.assertEqual(
-            self.client.post("/log", json={"type": "running", "minutes": 0}).status_code, 400
-        )
-        self.assertEqual(
-            self.client.post("/log", json={"type": "running", "minutes": -5}).status_code, 400
-        )
-        self.assertEqual(
-            self.client.post("/log", json={"type": "running", "minutes": "nope"}).status_code,
+            self.client.post("/log", data="x", content_type="text/plain").status_code,
             400,
         )
         self.assertEqual(
-            self.client.post("/log", json={"type": "napping", "minutes": 10}).status_code, 400
+            self.client.post("/log", json={"minutes": 10}).status_code, 400
+        )
+        self.assertEqual(
+            self.client.post(
+                "/log", json={"type": "running", "minutes": 0}
+            ).status_code,
+            400,
+        )
+        self.assertEqual(
+            self.client.post(
+                "/log", json={"type": "running", "minutes": -5}
+            ).status_code,
+            400,
+        )
+        self.assertEqual(
+            self.client.post(
+                "/log", json={"type": "running", "minutes": "nope"}
+            ).status_code,
+            400,
+        )
+        self.assertEqual(
+            self.client.post(
+                "/log", json={"type": "napping", "minutes": 10}
+            ).status_code,
+            400,
         )
         self.assertEqual(self.client.get("/notices").get_json(), [])
-        self.assertEqual(self.client.get("/calories?period=week").get_json()["count"], 0)
+        self.assertEqual(
+            self.client.get("/calories?period=week").get_json()["count"], 0
+        )
 
         walking = self.client.post("/log", json={"type": "walking", "minutes": "40"})
         self.assertEqual(walking.status_code, 201)
@@ -186,12 +212,16 @@ class DietFlowTest(unittest.TestCase):
         self.assertEqual(undone.status_code, 200)
         self.assertEqual(undone.get_json()["type"], "running")
         self.assertEqual(undone.get_json()["minutes"], 60)
-        self.assertEqual(self.client.get("/calories?period=day").get_json()["total_calories"], 187)
+        self.assertEqual(
+            self.client.get("/calories?period=day").get_json()["total_calories"], 187
+        )
         self.assertEqual(len(self.client.get("/notices").get_json()), 3)
 
         self.assertEqual(self.client.post("/log/undo").status_code, 200)
         self.assertEqual(self.client.post("/log/undo").status_code, 400)
-        self.assertEqual(self.client.get("/calories?period=week").get_json()["total_calories"], 0)
+        self.assertEqual(
+            self.client.get("/calories?period=week").get_json()["total_calories"], 0
+        )
 
     def test_calorie_periods(self):
         empty = self.client.get("/calories?period=week")
@@ -209,22 +239,30 @@ class DietFlowTest(unittest.TestCase):
                     {
                         "type": "running",
                         "minutes": 30,
-                        "logged_at": (now - timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%S"),
+                        "logged_at": (now - timedelta(hours=1)).strftime(
+                            "%Y-%m-%dT%H:%M:%S"
+                        ),
                     },
                     {
                         "type": "cycling",
                         "minutes": 45,
-                        "logged_at": (now - timedelta(days=10)).strftime("%Y-%m-%dT%H:%M:%S"),
+                        "logged_at": (now - timedelta(days=10)).strftime(
+                            "%Y-%m-%dT%H:%M:%S"
+                        ),
                     },
                     {
                         "type": "yoga",
                         "minutes": 50,
-                        "logged_at": (now - timedelta(days=40)).strftime("%Y-%m-%dT%H:%M:%S"),
+                        "logged_at": (now - timedelta(days=40)).strftime(
+                            "%Y-%m-%dT%H:%M:%S"
+                        ),
                     },
                     {
                         "type": "not_a_real_activity",
                         "minutes": 20,
-                        "logged_at": (now - timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%S"),
+                        "logged_at": (now - timedelta(hours=1)).strftime(
+                            "%Y-%m-%dT%H:%M:%S"
+                        ),
                     },
                 ],
                 indent=2,
@@ -252,7 +290,9 @@ class DietFlowTest(unittest.TestCase):
         for body in (day, week, month):
             self.assertIn("from", body)
             self.assertIn("to", body)
-            self.assertEqual(sum(row["calories"] for row in body["logs"]), body["total_calories"])
+            self.assertEqual(
+                sum(row["calories"] for row in body["logs"]), body["total_calories"]
+            )
 
     def test_user_profile_validation(self):
         self.assertEqual(self.client.get("/targets").status_code, 400)
@@ -260,7 +300,9 @@ class DietFlowTest(unittest.TestCase):
         self.assertEqual(self.client.get("/targets?period=week").status_code, 400)
 
         self.assertEqual(
-            self.client.post("/user?age=28&gender=male&weight_kg=80&height_cm=178").status_code,
+            self.client.post(
+                "/user?age=28&gender=male&weight_kg=80&height_cm=178"
+            ).status_code,
             400,
         )
         self.assertEqual(
@@ -339,7 +381,9 @@ class DietFlowTest(unittest.TestCase):
         self.assertEqual(walking.get_json()["calories"], 187)
 
         burned = self.client.get("/calories?period=week").get_json()
-        self.assertEqual([row["type"] for row in burned["logs"]], ["running", "walking"])
+        self.assertEqual(
+            [row["type"] for row in burned["logs"]], ["running", "walking"]
+        )
         self.assertEqual(burned["total_calories"], 487)
 
         week = self.targets("week")

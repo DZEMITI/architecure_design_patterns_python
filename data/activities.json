@@ -1,12 +1,42 @@
 [
-  {"name": "walking", "calories_per_60_min": 280},
-  {"name": "running", "calories_per_60_min": 600},
-  {"name": "cycling", "calories_per_60_min": 480},
-  {"name": "swimming", "calories_per_60_min": 500},
-  {"name": "yoga", "calories_per_60_min": 180},
-  {"name": "weight_lifting", "calories_per_60_min": 360},
-  {"name": "jumping_rope", "calories_per_60_min": 740},
-  {"name": "hiking", "calories_per_60_min": 430},
-  {"name": "dancing", "calories_per_60_min": 330},
-  {"name": "rowing", "calories_per_60_min": 520}
+  {
+    "name": "walking",
+    "calories_per_60_min": 280
+  },
+  {
+    "name": "running",
+    "calories_per_60_min": 600
+  },
+  {
+    "name": "cycling",
+    "calories_per_60_min": 480
+  },
+  {
+    "name": "swimming",
+    "calories_per_60_min": 500
+  },
+  {
+    "name": "yoga",
+    "calories_per_60_min": 180
+  },
+  {
+    "name": "weight_lifting",
+    "calories_per_60_min": 360
+  },
+  {
+    "name": "jumping_rope",
+    "calories_per_60_min": 740
+  },
+  {
+    "name": "hiking",
+    "calories_per_60_min": 430
+  },
+  {
+    "name": "dancing",
+    "calories_per_60_min": 330
+  },
+  {
+    "name": "rowing",
+    "calories_per_60_min": 520
+  }
 ]

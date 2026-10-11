@@ -84,9 +84,9 @@ Ten activities in `data/activities.json` each have calories burned per 60 minute
 
 The sample sessions in `data/logs.json` are dated around 10 October 2026. A short workout week stays under every lifestyle minimum, so the diet call uses `not active`.
 
-## Start
+## Setup
 
-Run these commands from the project root. The JSON paths are relative to that directory.
+Use Python 3.9 or newer. Run these commands from the project root. The JSON paths are relative to that directory.
 
 ```bash
 python3 -m venv .venv
@@ -95,7 +95,16 @@ pip install -r requirements.txt
 python app.py
 ```
 
-The app listens on `http://127.0.0.1:5000`. On macOS, port 5000 is sometimes taken by AirPlay. If startup fails, change the port at the bottom of `app.py`.
+`requirements.txt` installs Flask, which runs the app, and Ruff, which checks and formats the Python files. The app listens on `http://127.0.0.1:5000`. On macOS, port 5000 is sometimes taken by AirPlay. If startup fails, change the port at the bottom of `app.py`.
+
+In Cursor or VS Code, saving a Python file formats it and applies Ruff fixes. That behavior comes from `.vscode/settings.json`. Install the Ruff extension (`charliermarsh.ruff`) if the editor does not format on save. The rules are in `pyproject.toml`: line length 88, and the `E`, `F`, and `I` checks. `test_e2e.py` is allowed to import `app` after it changes directory.
+
+From the activated virtual environment you can run the same checks by hand:
+
+```bash
+ruff check .
+ruff format .
+```
 
 ## Requests
 
