@@ -8,7 +8,20 @@
 
 # Class 1 — Introduction
 
-No refactor in this meeting. The aim is a shared picture of what the app does and where the code is tangled, so later classes change one seam at a time. The descriptions below are the vocabulary for those classes. This meeting does not implement the patterns.
+Welcome to the Information technology and design patterns labs! These classes teach you how to use the right software architecture patterns when building applications. The intention is to give you an example of what the work of professional software engineers looks like on a daily basis. We'll go through the following scenario:
+
+You are professional software engineers. AI adoption in the company is gaining momentum. More and more people use it to achieve goals that are outside their normal expertise — they build software! They vibe code.
+
+The problem with vibe-coded apps is that they often don't follow code standards or good practices. As a result, they are not scalable or maintainable. They break at the first opportunity, and when that happens, the original creators come to you, the professional engineer. Your job is to fix the app and do it the right way. You know that an application should follow well-established code and architecture patterns. For you, it's a piece of cake, because you build great apps every day.
+
+In these classes, your goal will be to refactor a simple app that is written as spaghetti code and, in each class, improve it by adding new software patterns. You'll learn:
+
+- How to read and analyse a codebase
+- How to plan and execute code refactors
+- How particular design patterns work in real life
+- How to safely refactor by relying on tests
+- How to work both individually and in teams
+
 
 ## Patterns
 
