@@ -110,27 +110,37 @@ ruff format .
 
 On macOS and Linux, use the commands in each first block. On Windows, open PowerShell and use the second block. PowerShell names `curl` something else, so the Windows commands call `curl.exe`.
 
-Save a profile:
+Save a profile.
+
+macOS and Linux:
 
 ```bash
 curl -X POST 'http://127.0.0.1:5000/user?age=28&gender=male&weight_kg=80&height_cm=178&goal=maintain'
 ```
 
+Windows (PowerShell):
+
 ```powershell
 curl.exe -X POST "http://127.0.0.1:5000/user?age=28&gender=male&weight_kg=80&height_cm=178&goal=maintain"
 ```
 
-List activities:
+List activities.
+
+macOS and Linux:
 
 ```bash
 curl http://127.0.0.1:5000/activities
 ```
 
+Windows (PowerShell):
+
 ```powershell
 curl.exe http://127.0.0.1:5000/activities
 ```
 
-Add an activity:
+Add an activity.
+
+macOS and Linux:
 
 ```bash
 curl -X POST http://127.0.0.1:5000/activities \
@@ -138,13 +148,17 @@ curl -X POST http://127.0.0.1:5000/activities \
   -d '{"name": "boxing", "calories_per_60_min": 540}'
 ```
 
+Windows (PowerShell):
+
 ```powershell
 curl.exe -X POST http://127.0.0.1:5000/activities `
   -H "Content-Type: application/json" `
   -d '{"name": "boxing", "calories_per_60_min": 540}'
 ```
 
-Log a session:
+Log a session.
+
+macOS and Linux:
 
 ```bash
 curl -X POST http://127.0.0.1:5000/log \
@@ -152,53 +166,75 @@ curl -X POST http://127.0.0.1:5000/log \
   -d '{"type": "running", "minutes": 30}'
 ```
 
+Windows (PowerShell):
+
 ```powershell
 curl.exe -X POST http://127.0.0.1:5000/log `
   -H "Content-Type: application/json" `
   -d '{"type": "running", "minutes": 30}'
 ```
 
-Read notices:
+Read notices.
+
+macOS and Linux:
 
 ```bash
 curl http://127.0.0.1:5000/notices
 ```
 
+Windows (PowerShell):
+
 ```powershell
 curl.exe http://127.0.0.1:5000/notices
 ```
 
-Undo the last log:
+Undo the last log.
+
+macOS and Linux:
 
 ```bash
 curl -X POST http://127.0.0.1:5000/log/undo
 ```
 
+Windows (PowerShell):
+
 ```powershell
 curl.exe -X POST http://127.0.0.1:5000/log/undo
 ```
 
-Calories burned in the last day, week, or month:
+Calories burned in the last day, week, or month.
+
+macOS and Linux:
 
 ```bash
 curl 'http://127.0.0.1:5000/calories?period=day'
 ```
 
+Windows (PowerShell):
+
 ```powershell
 curl.exe "http://127.0.0.1:5000/calories?period=day"
 ```
+
+macOS and Linux:
 
 ```bash
 curl 'http://127.0.0.1:5000/calories?period=week'
 ```
 
+Windows (PowerShell):
+
 ```powershell
 curl.exe "http://127.0.0.1:5000/calories?period=week"
 ```
 
+macOS and Linux:
+
 ```bash
 curl 'http://127.0.0.1:5000/calories?period=month'
 ```
+
+Windows (PowerShell):
 
 ```powershell
 curl.exe "http://127.0.0.1:5000/calories?period=month"
@@ -206,35 +242,51 @@ curl.exe "http://127.0.0.1:5000/calories?period=month"
 
 Daily diet targets for the same periods. A profile must already be saved.
 
+macOS and Linux:
+
 ```bash
 curl 'http://127.0.0.1:5000/targets?period=day'
 ```
+
+Windows (PowerShell):
 
 ```powershell
 curl.exe "http://127.0.0.1:5000/targets?period=day"
 ```
 
+macOS and Linux:
+
 ```bash
 curl 'http://127.0.0.1:5000/targets?period=week'
 ```
+
+Windows (PowerShell):
 
 ```powershell
 curl.exe "http://127.0.0.1:5000/targets?period=week"
 ```
 
+macOS and Linux:
+
 ```bash
 curl 'http://127.0.0.1:5000/targets?period=month'
 ```
+
+Windows (PowerShell):
 
 ```powershell
 curl.exe "http://127.0.0.1:5000/targets?period=month"
 ```
 
-Request counter:
+Request counter.
+
+macOS and Linux:
 
 ```bash
 curl http://127.0.0.1:5000/stats
 ```
+
+Windows (PowerShell):
 
 ```powershell
 curl.exe http://127.0.0.1:5000/stats
