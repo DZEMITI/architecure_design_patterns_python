@@ -108,10 +108,16 @@ ruff format .
 
 ## Requests
 
+On macOS and Linux, use the commands in each first block. On Windows, open PowerShell and use the second block. PowerShell names `curl` something else, so the Windows commands call `curl.exe`.
+
 Save a profile:
 
 ```bash
 curl -X POST 'http://127.0.0.1:5000/user?age=28&gender=male&weight_kg=80&height_cm=178&goal=maintain'
+```
+
+```powershell
+curl.exe -X POST "http://127.0.0.1:5000/user?age=28&gender=male&weight_kg=80&height_cm=178&goal=maintain"
 ```
 
 List activities:
@@ -120,11 +126,21 @@ List activities:
 curl http://127.0.0.1:5000/activities
 ```
 
+```powershell
+curl.exe http://127.0.0.1:5000/activities
+```
+
 Add an activity:
 
 ```bash
 curl -X POST http://127.0.0.1:5000/activities \
   -H 'Content-Type: application/json' \
+  -d '{"name": "boxing", "calories_per_60_min": 540}'
+```
+
+```powershell
+curl.exe -X POST http://127.0.0.1:5000/activities `
+  -H "Content-Type: application/json" `
   -d '{"name": "boxing", "calories_per_60_min": 540}'
 ```
 
@@ -136,10 +152,20 @@ curl -X POST http://127.0.0.1:5000/log \
   -d '{"type": "running", "minutes": 30}'
 ```
 
+```powershell
+curl.exe -X POST http://127.0.0.1:5000/log `
+  -H "Content-Type: application/json" `
+  -d '{"type": "running", "minutes": 30}'
+```
+
 Read notices:
 
 ```bash
 curl http://127.0.0.1:5000/notices
+```
+
+```powershell
+curl.exe http://127.0.0.1:5000/notices
 ```
 
 Undo the last log:
@@ -148,18 +174,34 @@ Undo the last log:
 curl -X POST http://127.0.0.1:5000/log/undo
 ```
 
+```powershell
+curl.exe -X POST http://127.0.0.1:5000/log/undo
+```
+
 Calories burned in the last day, week, or month:
 
 ```bash
 curl 'http://127.0.0.1:5000/calories?period=day'
 ```
 
+```powershell
+curl.exe "http://127.0.0.1:5000/calories?period=day"
+```
+
 ```bash
 curl 'http://127.0.0.1:5000/calories?period=week'
 ```
 
+```powershell
+curl.exe "http://127.0.0.1:5000/calories?period=week"
+```
+
 ```bash
 curl 'http://127.0.0.1:5000/calories?period=month'
+```
+
+```powershell
+curl.exe "http://127.0.0.1:5000/calories?period=month"
 ```
 
 Daily diet targets for the same periods. A profile must already be saved.
@@ -168,18 +210,34 @@ Daily diet targets for the same periods. A profile must already be saved.
 curl 'http://127.0.0.1:5000/targets?period=day'
 ```
 
+```powershell
+curl.exe "http://127.0.0.1:5000/targets?period=day"
+```
+
 ```bash
 curl 'http://127.0.0.1:5000/targets?period=week'
+```
+
+```powershell
+curl.exe "http://127.0.0.1:5000/targets?period=week"
 ```
 
 ```bash
 curl 'http://127.0.0.1:5000/targets?period=month'
 ```
 
+```powershell
+curl.exe "http://127.0.0.1:5000/targets?period=month"
+```
+
 Request counter:
 
 ```bash
 curl http://127.0.0.1:5000/stats
+```
+
+```powershell
+curl.exe http://127.0.0.1:5000/stats
 ```
 
 ## Test
