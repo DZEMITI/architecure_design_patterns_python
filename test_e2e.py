@@ -1,9 +1,11 @@
 import json
 import os
-import time
 import unittest
+import urllib.parse
 from datetime import datetime, timedelta
+from io import BytesIO
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parent
 os.chdir(ROOT)
@@ -29,6 +31,27 @@ SEDENTARY_MALE_TARGETS = {
     "fat_g": 59.3,
 }
 
+EXTRA_ACTIVE_MALE = {
+    "bmr": 1778,
+    "tdee": 3378,
+    "daily_targets": {
+        "calories": 3378,
+        "protein_g": 200.0,
+        "carbohydrates_g": 400.0,
+        "fat_g": 90.0,
+    },
+}
+
+
+def fake_urlopen(req, timeout=None):
+    parts = urllib.parse.urlsplit(req.full_url)
+    activity = urllib.parse.parse_qs(parts.query).get("activity", [""])[0]
+    if activity == "extra_active":
+        payload = EXTRA_ACTIVE_MALE
+    else:
+        payload = {"bmr": 1778, "tdee": 2134, "daily_targets": SEDENTARY_MALE_TARGETS}
+    return BytesIO(json.dumps(payload).encode())
+
 
 class DietFlowTest(unittest.TestCase):
     @classmethod
@@ -46,6 +69,12 @@ class DietFlowTest(unittest.TestCase):
             cls.user_path.read_text() if cls.user_path.exists() else None
         )
         cls.catalog = json.loads(cls.original_activities)
+        cls.macros = patch("urllib.request.urlopen", side_effect=fake_urlopen)
+        cls.macros.start()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.macros.stop()
 
     def setUp(self):
         self.client = app.test_client()
@@ -438,13 +467,7 @@ class DietFlowTest(unittest.TestCase):
         return saved.get_json()
 
     def targets(self, period):
-        response = None
-        for attempt in range(4):
-            time.sleep(1.3)
-            response = self.client.get("/targets?period=" + period)
-            if response.status_code != 502:
-                break
-            time.sleep(2 * (attempt + 1))
+        response = self.client.get("/targets?period=" + period)
         self.assertEqual(response.status_code, 200, response.get_json())
         return response.get_json()
 
