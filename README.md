@@ -21,50 +21,47 @@ Together, this is a small activity log that connects what you did with what you 
 This is the as-is picture. Update it when a refactor moves a responsibility out of `app.py`.
 
 ```mermaid
-graph TB
-    client[HTTP client]
+flowchart LR
+    client["HTTP client"]
 
-    subgraph Handlers
-        getAct[GET activities]
-        postAct[POST activities]
-        postLog[POST log]
-        undo[POST undo]
-        getNotes[GET notices]
-        getCal[GET calories]
-        postUser[POST user]
-        stats[GET stats]
-        targets[GET targets]
+    subgraph app["Flask app — app.py (single module)"]
+        direction TB
+        routes["9 route handlers<br/>GET/POST activities · POST log · POST undo<br/>GET notices · GET calories · POST user<br/>GET stats · GET targets"]
+        logFlow["POST /log<br/>validate → calculate calories<br/>update weekly total and notices"]
+        targetFlow["GET /targets<br/>read profile and recent logs<br/>choose activity band → map API value"]
+        requestState["Shared REQUESTS state<br/>count · last_path · last_seconds"]
+        routes --> logFlow
+        routes --> targetFlow
+        routes -. "each route updates" .-> requestState
     end
 
-    client --> Handlers
-    getAct ~~~ postAct
-    postAct ~~~ postLog
-    postLog ~~~ undo
-    undo ~~~ getNotes
-    getNotes ~~~ getCal
-    getCal ~~~ postUser
-    postUser ~~~ stats
-    stats ~~~ targets
+    subgraph files["Local JSON files (data/)"]
+        activities[(activities.json)]
+        logs[(logs.json)]
+        notices[(notices.json)]
+        user[(user.json)]
+    end
 
-    getAct -->|reads| a1[activities.json]
-    postAct -->|writes| a2[activities.json]
-    postLog -->|reads| a3[activities.json]
-    postLog -->|writes| logs1[logs.json]
-    postLog -->|writes| notes1[notices.json]
-    undo -->|writes| logs2[logs.json]
-    getNotes -->|reads| notes2[notices.json]
-    getCal -->|reads| logs3[logs.json]
-    getCal -->|reads| a4[activities.json]
-    postUser -->|writes| user1[user.json]
-    stats -->|reads| requests[REQUESTS]
-    targets -->|reads| user2[user.json]
-    targets -->|reads| logs4[logs.json]
-    targets -->|reads| a5[activities.json]
-    targets --> bands[LIFESTYLE_ACTIVITY]
-    bands --> names[ACTIVITY_FOR_API]
-    names -->|calls| macros[Macros API]
-    Handlers -->|each call updates| requests
+    client --> routes
+    routes -->|"GET/POST activities"| activities
+    logFlow -->|"read catalog"| activities
+    logFlow -->|"read/write"| logs
+    logFlow -->|"read/write"| notices
+    routes -->|"POST undo; GET calories"| logs
+    routes -->|"GET calories"| activities
+    routes -->|"GET notices"| notices
+    routes -->|"POST user"| user
+    targetFlow -->|"read"| user
+    targetFlow -->|"read"| logs
+    targetFlow -->|"read"| activities
+    routes -->|"GET stats"| requestState
+    targetFlow -->|"HTTPS request"| macros["Macros API<br/>calorieapiadmin.com"]
 ```
+
+The route handlers and their helper functions all live in `app.py`. In particular,
+`POST /log` updates the log and notices files, while `GET /targets` derives a
+weekly-equivalent activity level from the profile, logs, and activity catalog before
+requesting daily macro targets from the external service.
 
 ## What it does
 
